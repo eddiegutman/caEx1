@@ -1,0 +1,1 @@
+/usr/bin/gcc -g   CMakeFiles/caEx1.dir/src/main.c.o CMakeFiles/caEx1.dir/src/ex1.c.o  -o caEx1 
