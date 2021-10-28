@@ -10,6 +10,7 @@
  *
  * @return 1 for big endian and 0 for little endian.
  */
+
 int is_big_endian() {
     // define a number in which his LSB is 1 and the remaining bytes are 0.
     unsigned long num = 1;
@@ -34,9 +35,10 @@ int is_big_endian() {
  * @param y second given word.
  * @return new merged word.
  */
+
 unsigned long merge_bytes(unsigned long x, unsigned long int y) {
     unsigned long merged;
-    int length = sizeof(long);
+    int length = sizeof(unsigned long);
 
     // define byte size pointer for each word.
     char* byte = (char *) &merged;
@@ -62,7 +64,30 @@ unsigned long merge_bytes(unsigned long x, unsigned long int y) {
 
     return merged;
 }
-unsigned long put_byte(unsigned long x, unsigned char b, int i){
 
+/**
+ * change the 'i' byte from the MSB in 'x' to 'b'.
+ *
+ * first determine the byte position by the machine's endian:
+ * if its a big endian the first byte in memory is the MSB so there is no need to alter the position.
+ * if its a little endian the first byte in memory is the LSB so the position is changed to sizeofword - 1 -i.
+ *
+ * @param x given word to change
+ * @param b given byte to used in the change
+ * @param i given byte location for the change
+ * @return new word with the switched byte.
+ */
+
+unsigned long put_byte(unsigned long x, unsigned char b, int i) {
+    unsigned long num = x;
+    char* byte = (char *) &num;
+
+    // determine the byte position
+    if (!is_big_endian())
+        i = (int)sizeof(unsigned long) - 1 - i;
+
+    // replace the byte
+    *(byte + i) = b;
+    return num;
 }
 
